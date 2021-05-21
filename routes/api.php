@@ -16,8 +16,8 @@ use App\Article;
 
 Route::post('register', 'UserController@register');
 Route::post('login', 'UserController@authenticate');
+Route::get('articles', 'ArticleController@index');
 Route::group(['middleware' => ['jwt.verify']], function () {
-    Route::get('articles', 'ArticleController@index');
     Route::get('user', 'UserController@getAuthenticatedUser');
     Route::get('articles/{article}', 'ArticleController@show');
     Route::post('articles', 'ArticleController@store');

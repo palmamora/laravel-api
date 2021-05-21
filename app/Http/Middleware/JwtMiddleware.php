@@ -10,7 +10,7 @@ use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 
-class JwtMiddleware extends BaseMiddleware
+class JwtMiddleware
 {
     /**
      * Handle an incoming request.
@@ -21,7 +21,6 @@ class JwtMiddleware extends BaseMiddleware
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
         try {
             $user = JWTAuth::parseToken()->authenticate();
         } catch (TokenExpiredException $e) {
