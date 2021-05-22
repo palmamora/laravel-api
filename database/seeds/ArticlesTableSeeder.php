@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Article;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ArticlesTableSeeder extends Seeder
 {
@@ -12,16 +13,23 @@ class ArticlesTableSeeder extends Seeder
      */
     public function run()
     {
-        Article::truncate();
+        //Article::truncate();
 
         $faker = \Faker\Factory::create();
 
-        for ($i=0; $i < 50; $i++) { 
-            Article::create([
-                'title' => $faker->sentence(3),
-                'body' => $faker->paragraph(1),
-
-            ]);
+        $users = App\User::all();
+        foreach ($users as $user) {
+            // iniciamos sesión con este usuario
+            JWTAuth::attempt(['email' => $user->email, 'password' => '123123']);
+            // Y ahora con este usuario creamos algunos articulos
+            $num_articles = 5;
+            for ($j = 0; $j < $num_articles; $j++) {
+                Article::create([
+                    'title' => $faker->sentence,
+                    'body' => $faker->paragraph,
+                    'user_id' => $user->id,
+                ]);
+            }
         }
     }
 }
